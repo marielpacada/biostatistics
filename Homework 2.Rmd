@@ -1,0 +1,129 @@
+---
+title: "PHP 1510 Homework 2"
+author: "Mariel Pacada" 
+date: "10/17/2019"
+output: html_document
+---
+
+&nbsp;
+```{r setup, include = FALSE}
+library(dplyr)
+library(gapminder)
+library(ggplot2)
+options(tibble.print_max = Inf) 
+```
+#### Question 1
+**How many unique countries are represented per continent?**
+&nbsp;
+
+Below, we see a tibble that shows how many unique countries are in each continent.
+```{r q1}
+by_continent <- gapminder %>%
+                  select(continent, country) %>%
+                  group_by(continent) %>% 
+                  summarize(countryCount = n_distinct(country))
+
+by_continent
+```
+&nbsp;
+
+#### Question 2
+**Which European nation had the lowest GDP per capita in 1997?**
+&nbsp; 
+
+Albania had the lowest GDP per capita in 1997 Europe. 
+```{r q2}
+by_GDP <- gapminder %>%
+            filter(continent == "Europe", year == 1997) %>%
+            select(country, gdpPercap) %>%
+            arrange(gdpPercap)
+            
+head(by_GDP)
+```
+&nbsp; 
+
+#### Question 3
+**According to the data available, what was the average life expectancy across each continent in the 1980s?**
+&nbsp; 
+
+Below, we see a tibble that shows the average life expectancy in each continent in the 1980s. 
+```{r q3}
+continent_life_exp <- gapminder %>%
+                        filter(year > 1979 & year < 1990) %>%
+                        group_by(continent) %>% 
+                        summarize(avgLifeExp = mean(lifeExp))
+                        
+continent_life_exp
+```
+&nbsp; 
+
+#### Question 4
+**What 5 countries have the highest total GDP over all years combined?**
+&nbsp; 
+
+Kuwait, Switzerland, Norway, the United States, and Canada are the five countries with the highest GDP over all years in this dataset. 
+```{r q4}
+total_gdp <- gapminder %>% 
+               select(country, gdpPercap) %>%
+               group_by(country) %>%
+               summarize(totalGdp = sum(gdpPercap)) %>%
+               arrange(desc(totalGdp))
+
+head(total_gdp, 5)
+```
+&nbsp; 
+
+#### Question 5
+**What countries and years had life expectancies of at least 80 years?**
+&nbsp; 
+
+Below, we can see the 22 instances (for 13 distinct countries) where life expectancy was at least 80 years. 
+```{r q5}
+life_exp_eighty <- gapminder %>% 
+                     select(country, lifeExp, year) %>%
+                     filter(lifeExp >= 80)
+
+life_exp_eighty
+```
+```{r, include = FALSE}
+n_distinct(life_exp_eighty$country)
+```
+&nbsp; 
+
+#### Question 6
+**Which three countries have had the most consistent population estimates (i.e. lowest standard deviation) across the years of available data?**
+&nbsp; 
+
+Sao Tome and Principe, Iceland, and Montenegro are the three countries with the most consistent population estimates over the years of available data. 
+```{r q6}
+lowest_sd <- gapminder %>% 
+               select(country, pop) %>%
+               group_by(country) %>%
+               summarize(popStdev = sd(pop)) %>%
+               arrange(popStdev)
+
+head(lowest_sd, 3)
+```
+&nbsp;
+
+#### Question 7 and 8
+**Create a plot about life expectancy.**
+&nbsp; 
+
+The plot below shows the progression of each country's life expectancy over time. Although not all **countries** have followed a consistent upward trend, the plot shows an overall upward trend for life expectancy across all **continents**. While all the continents have experienced a steady increase (and at a considerably similar rate), their starting (1952) and ending (2007) values are distinct from each other. Africa has had the lowest life expectancy over the years, while Oceania and Europe lead the others. 
+```{r q7}
+ggplot(gapminder, aes(x = year, y = lifeExp)) + geom_line(aes(group = country)) + 
+  geom_smooth(aes(color = continent), method = "lm") + 
+  labs(title = "Life Expectancy from 1952 to 2007", x = "Year", y = "Life Expectancy (in years)")
+```
+&nbsp; 
+
+#### Question 9 and 10
+**Create boxplots of life expectancy by continent.**
+&nbsp;
+
+The boxplots below visualize the spread of average life expectancy for each continent. Similarly to their trends over time, Oceania and Europe have very similar distributions and lead the rest in terms of median life expectancy. (Note, however, that Europe has several outliers unlike Oceania.) Africa has the lowest median life expectancy, and Asia has the largest standard deviation.
+```{r q9}
+ggplot(gapminder, aes(x = continent, y = lifeExp)) + geom_boxplot() + geom_jitter(alpha = 0.04) + 
+  labs(title = "Life Expectancy by Continent (1952 - 2007)", x = "Continent", y = "Life Expectancy (in years)")
+```
