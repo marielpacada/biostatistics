@@ -110,10 +110,10 @@ head(lowest_sd, 3)
 **Create a plot about life expectancy.**
 &nbsp; 
 
-The plot below shows the progression of each country's life expectancy over time. Although not all **countries** have followed a consistent upward trend, the plot shows an overall upward trend for life expectancy across all **continents**. While all the continents have experienced a steady increase (and at a considerably similar rate), their starting (1952) and ending (2007) values are distinct from each other. Africa has had the lowest life expectancy over the years, while Oceania and Europe lead the others. 
+The plot below shows the progression of each country's life expectancy over time. Although not all **countries** have followed a consistent upward trend, the plot shows an overall upward trend for life expectancy across all **continents**. While it seems all the continents have experienced a steady increase (and at a considerably similar rate), their starting (1952) and ending (2007) values are distinct from each other. Africa has had the lowest life expectancy over the years, while Oceania and Europe lead the others. 
 ```{r q7}
-ggplot(gapminder, aes(x = year, y = lifeExp)) + geom_line(aes(group = country)) + 
-  geom_smooth(aes(color = continent), method = "lm") + 
+ggplot(gapminder, aes(x = year, y = lifeExp, group = country, color = continent)) + geom_line() + 
+  geom_smooth(method = "lm", se = FALSE) + 
   labs(title = "Life Expectancy from 1952 to 2007", x = "Year", y = "Life Expectancy (in years)")
 ```
 &nbsp; 
