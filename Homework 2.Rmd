@@ -1,11 +1,12 @@
 ---
 title: "PHP 1510 Homework 2"
-author: "Mariel Pacada" 
+author: "Mariel Pacada"
 date: "10/17/2019"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
-&nbsp;
 ```{r setup, include = FALSE}
 library(dplyr)
 library(gapminder)
@@ -112,9 +113,10 @@ head(lowest_sd, 3)
 
 The plot below shows the progression of each country's life expectancy over time. Although not all **countries** have followed a consistent upward trend, the plot shows an overall upward trend for life expectancy across all **continents**. While it seems all the continents have experienced a steady increase (and at a considerably similar rate), their starting (1952) and ending (2007) values are distinct from each other. Africa has had the lowest life expectancy over the years, while Oceania and Europe lead the others. 
 ```{r q7}
-ggplot(gapminder, aes(x = year, y = lifeExp, group = country, color = continent)) + geom_line() + 
-  geom_smooth(method = "lm", se = FALSE) + 
-  labs(title = "Life Expectancy from 1952 to 2007", x = "Year", y = "Life Expectancy (in years)")
+ggplot(gapminder, aes(x = year, y = lifeExp, group = country, color = continent)) + 
+  geom_line() + geom_smooth(method = "lm", se = FALSE) + 
+  labs(title = "Life Expectancy from 1952 to 2007", x = "Year", 
+       y = "Life Expectancy (in years)")
 ```
 &nbsp; 
 
@@ -124,6 +126,7 @@ ggplot(gapminder, aes(x = year, y = lifeExp, group = country, color = continent)
 
 The boxplots below visualize the spread of average life expectancy for each continent. Similarly to their trends over time, Oceania and Europe have very similar distributions and lead the rest in terms of median life expectancy. (Note, however, that Europe has several outliers unlike Oceania.) Africa has the lowest median life expectancy, and Asia has the largest standard deviation.
 ```{r q9}
-ggplot(gapminder, aes(x = continent, y = lifeExp)) + geom_boxplot() + geom_jitter(alpha = 0.04) + 
-  labs(title = "Life Expectancy by Continent (1952 - 2007)", x = "Continent", y = "Life Expectancy (in years)")
+ggplot(gapminder, aes(x = continent, y = lifeExp)) + geom_boxplot() + 
+  geom_jitter(alpha = 0.04) + labs(title = "Life Expectancy by Continent (1952 - 2007)", 
+                                   x = "Continent", y = "Life Expectancy (in years)")
 ```
